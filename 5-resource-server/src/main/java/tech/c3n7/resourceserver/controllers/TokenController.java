@@ -17,4 +17,10 @@ public class TokenController {
     public Map<String, Object> getToken(@AuthenticationPrincipal Jwt jwt) {
         return Collections.singletonMap("principal", jwt);
     }
+
+
+    @GetMapping("/alt")
+    public Jwt getJwtToken(@AuthenticationPrincipal Jwt jwt) {
+        return jwt;
+    }
 }
