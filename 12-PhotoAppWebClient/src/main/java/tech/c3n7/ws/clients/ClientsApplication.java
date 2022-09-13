@@ -22,6 +22,7 @@ public class ClientsApplication {
         return new RestTemplate();
     }
 
+    @Bean
     public WebClient webClient(
             ClientRegistrationRepository clientRegistrationRepository, // Repository of registered oauth clients
             OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository // Clients that have already been authorized

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import tech.c3n7.ws.clients.response.AlbumRest;
 
 import java.util.List;
@@ -32,8 +33,27 @@ public class AlbumController {
 //    @Autowired
 //    RestTemplate restTemplate;
 
+    @Autowired
+    WebClient webClient;
+
     @GetMapping("/albums")
-    public String getAlbums(Model model, @AuthenticationPrincipal OidcUser principal
+    public String getAlbums(Model model) {
+
+        String url = "http://localhost:8082/albums";
+
+        List<AlbumRest> albums = webClient.get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<AlbumRest>>() {})
+                .block();
+
+        model.addAttribute("albums", albums);
+
+        return "albums";
+    }
+
+    @GetMapping("/albums-alt")
+    public String getAlbumsAlt(Model model, @AuthenticationPrincipal OidcUser principal
            // , Authentication authentication
     ) {
 
