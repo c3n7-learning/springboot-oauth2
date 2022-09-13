@@ -3,8 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <title>Javascript PKCE</title>
+
+    <script
+            src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous"></script>
+
+    <script language="javascript">
+        function generateState(length) {
+            let stateValue = "";
+            let alphaNumericCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let alphaNumericCharactersLength = alphaNumericCharacters.length;
+            for(let i = 0; i < length; i++) {
+                stateValue += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphaNumericCharactersLength));
+            }
+
+            document.getElementById("stateValue").innerHTML = stateValue;
+        }
+
+        function generateCodeVerifier() {
+            let returnValue = "";
+            let randomByteArray = new Uint8Array(32);
+            window.crypto.getRandomValues(randomByteArray);
+
+            returnValue = base64urlencode(randomByteArray);
+
+            document.getElementById("codeVerifierValue").innerHTML = returnValue;
+        }
+
+        function base64urlencode(sourceValue) {
+            var stringValue = String.fromCharCode.apply(null, sourceValue);
+            var base64Encoded = btoa(stringValue);
+            var base64urlEncoded = base64Encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+            return base64urlEncoded;
+        }
+
+        async function generateCodeChallenge() {
+            let codeChallengeValue = "";
+
+            let codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
+
+            let textEncoder = new TextEncoder("US-ASCII");
+            let encodedValue = textEncoder.encode(codeVerifier);
+            let digest = await window.crypto.subtle.digest("SHA-256", encodedValue);
+
+            codeChallengeValue = base64urlencode(Array.from(new Uint8Array(digest)));
+
+            document.getElementById("codeChallengeValue").innerHTML = codeChallengeValue;
+        }
+    </script>
 </head>
 <body>
     <h1>Index Page</h1>
+
+    <div id="stateValue"></div>
+    <div>
+        <button onclick="generateState(30)">Generate State Value</button>
+    </div>
+    <br/><br/>
+
+    <div id="codeVerifierValue"></div>
+    <div>
+        <button onclick="generateCodeVerifier()">Generate Code Verifier Value</button>
+    </div>
+    <br/><br/>
+
+
+    <div id="codeChallengeValue"></div>
+    <div>
+        <button onclick="generateCodeChallenge()">Generate Code Challenge Value</button>
+    </div>
+    <br/><br/>
 </body>
 </html>
