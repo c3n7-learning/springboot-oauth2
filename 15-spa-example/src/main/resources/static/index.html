@@ -51,6 +51,22 @@
 
             document.getElementById("codeChallengeValue").innerHTML = codeChallengeValue;
         }
+
+        function getAuthCode() {
+            const state = document.getElementById("stateValue").innerHTML;
+            const codeChallenge = document.getElementById("codeChallengeValue").innerHTML;
+
+            let authorizationURL = " http://localhost:8180/realms/c3n7-learning/protocol/openid-connect/auth";
+            authorizationURL += "?client_id=photo-app-PKCE-client";
+            authorizationURL += "&response_type=code";
+            authorizationURL += "&scope=openid";
+            authorizationURL += "&redirect_uri=http://localhost:8181/authcodeReader.html";
+            authorizationURL += `&state${state}`;
+            authorizationURL += `&code_challenge=${codeChallenge}`;
+            authorizationURL += "&code_challenge_method=S256";
+
+            window.open(authorizationURL, 'authorizationRequestWindow', 'width=800, height=600, top=200');
+        }
     </script>
 </head>
 <body>
@@ -72,6 +88,11 @@
     <div id="codeChallengeValue"></div>
     <div>
         <button onclick="generateCodeChallenge()">Generate Code Challenge Value</button>
+    </div>
+    <br/><br/>
+
+    <div>
+        <button onclick="getAuthCode()">Get Auth Code</button>
     </div>
     <br/><br/>
 </body>
