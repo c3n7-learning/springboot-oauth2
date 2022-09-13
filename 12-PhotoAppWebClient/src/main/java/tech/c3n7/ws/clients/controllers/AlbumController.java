@@ -1,6 +1,12 @@
 package tech.c3n7.ws.clients.controllers;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,9 +18,9 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.client.RestTemplate;
 import tech.c3n7.ws.clients.response.AlbumRest;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -22,6 +28,9 @@ public class AlbumController {
 
     @Autowired
     OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
+
+//    @Autowired
+//    RestTemplate restTemplate;
 
     @GetMapping("/albums")
     public String getAlbums(Model model, @AuthenticationPrincipal OidcUser principal
@@ -47,19 +56,31 @@ public class AlbumController {
 
         System.out.println("idTokenValue: " + idTokenValue);
 
-        AlbumRest album = new AlbumRest();
-        album.setAlbumId("albumOne");
-        album.setAlbumTitle("Album one title");
-        album.setAlbumUrl("http://localhost:8082/albums/1");
+        String url = "http://localhost:8082/albums";
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "Bearer " + jwtAccessToken);
+        HttpEntity<List<AlbumRest>> entity = new HttpEntity<>(httpHeaders);
 
-        AlbumRest album2 = new AlbumRest();
-        album2.setAlbumId("albumTwo");
-        album2.setAlbumTitle("Album two title");
-        album2.setAlbumUrl("http://localhost:8082/albums/2");
+        RestTemplate restTemplate = new RestTemplate();
 
-        List returnValue = Arrays.asList(album, album2);
+        ResponseEntity<List<AlbumRest>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<List<AlbumRest>>() {});
 
-        model.addAttribute("albums", returnValue);
+        List<AlbumRest> albums = responseEntity.getBody();
+
+//        AlbumRest album = new AlbumRest();
+//        album.setAlbumId("albumOne");
+//        album.setAlbumTitle("Album one title");
+//        album.setAlbumUrl("http://localhost:8082/albums/1");
+//
+//        AlbumRest album2 = new AlbumRest();
+//        album2.setAlbumId("albumTwo");
+//        album2.setAlbumTitle("Album two title");
+//        album2.setAlbumUrl("http://localhost:8082/albums/2");
+
+//        List returnValue = Arrays.asList(album, album2);
+
+        model.addAttribute("albums", albums);
 
         return "albums";
     }
