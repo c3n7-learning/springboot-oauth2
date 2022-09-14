@@ -1,0 +1,11 @@
+# https://spring.io/projects/spring-cloud-gateway#learn click on reference docs of latest version, then CORS configuration from the reference docs
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders:
+              - Authorization
