@@ -7,5 +7,6 @@ spring:
           '[/**]':
             allowedOrigins: "*"
             allowedMethods: "*"
+#            allowedHeaders: "*"
             allowedHeaders:
               - Authorization

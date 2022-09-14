@@ -115,7 +115,8 @@
                     request.setRequestHeader("Authorization", `Bearer ${accessToken}`);
                 },
                 type: "GET",
-                url: "http://localhost:8082/users/status/check",
+                // url: "http://localhost:8082/users/status/check",
+                url: "http://localhost:40397/users/status/check",
                 success: postInfoFromAccessToken,
                 dataType: "text"
             });
