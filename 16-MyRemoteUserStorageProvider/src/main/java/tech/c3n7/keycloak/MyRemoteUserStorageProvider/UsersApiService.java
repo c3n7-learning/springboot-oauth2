@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 public interface UsersApiService {
     @GET
     @Path("/{username}")
-   User getUserDetails(@PathParam("username") String username);
+    User getUserDetails(@PathParam("username") String username);
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
