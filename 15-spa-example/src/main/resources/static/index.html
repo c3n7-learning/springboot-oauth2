@@ -56,10 +56,10 @@
             const state = document.getElementById("stateValue").innerHTML;
             const codeChallenge = document.getElementById("codeChallengeValue").innerHTML;
 
-            let authorizationURL = " http://localhost:8180/realms/c3n7-learning/protocol/openid-connect/auth";
+            let authorizationURL = "http://localhost:8180/realms/c3n7-learning/protocol/openid-connect/auth";
             authorizationURL += "?client_id=photo-app-PKCE-client";
             authorizationURL += "&response_type=code";
-            authorizationURL += "&scope=openid";
+            authorizationURL += "&scope=openid%20web-origins";
             authorizationURL += "&redirect_uri=http://localhost:8181/authcodeReader.html";
             authorizationURL += `&state=${state}`;
             authorizationURL += `&code_challenge=${codeChallenge}`;
@@ -69,7 +69,41 @@
         }
 
         function postAuthorize(state, authCode) {
-            alert("State = " + state + ", authCode = " + authCode);
+            const originalState = document.getElementById("stateValue").innerHTML;
+
+            if(state === originalState) {
+                requestTokens(authCode);
+            } else {
+                alert("Invalid state value received");
+            }
+        }
+
+        function requestTokens(authCode) {
+            const codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
+
+            const data = {
+                "grant_type": "authorization_code",
+                "client_id": "photo-app-PKCE-client",
+                "code": authCode,
+                "code_verifier": codeVerifier,
+                "redirect_uri": "http://localhost:8181/authcodeReader.html"
+            };
+
+            $.ajax({
+                beforeSend: function(request) {
+                    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+                },
+                type: "POST",
+                url: "http://localhost:8180/realms/c3n7-learning/protocol/openid-connect/token",
+                data: data,
+                success: postRequestAccessToken,
+                crossDomain: true,
+                dataType: "json"
+            });
+        }
+
+        function postRequestAccessToken(data, status, jqXHR) {
+            document.getElementById("accessToken").innerHTML = data["access_token"];
         }
     </script>
 </head>
@@ -97,6 +131,11 @@
 
     <div>
         <button onclick="getAuthCode()">Get Auth Code</button>
+    </div>
+    <br/><br/>
+
+    <div>
+        Access token: <span id="accessToken"></span>
     </div>
     <br/><br/>
 </body>
