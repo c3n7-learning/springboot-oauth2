@@ -26,7 +26,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeyCloakRoleConverter());
 
-        http.cors().and()
+        http
+                .cors().and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/users/status/check")
 //                .hasAuthority("SCOPE_profile")
