@@ -23,12 +23,12 @@
 		</dependency>
 
 		<!-- https://www.keycloak.org/docs/latest/release_notes/index.html#changes-in-keycloak-storage-->
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-server-spi</artifactId>
-			<version>19.0.1</version>
-			<scope>provided</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.keycloak</groupId>-->
+<!--			<artifactId>keycloak-server-spi</artifactId>-->
+<!--			<version>19.0.1</version>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.keycloak</groupId>
@@ -43,12 +43,25 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-client -->
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-core</artifactId>
+			<version>19.0.1</version>
+		</dependency>
+
+<!--		https://howtodoinjava.com/resteasy/solved-java-lang-classnotfoundexception-org-glassfish-jersey-client-jerseyclientbuilder-->
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-client</artifactId>
-			<version>6.0.1.Final</version>
+			<version>6.1.0.Final</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>3.0.8</version>
+		</dependency>
+
 
 
 		<dependency>
@@ -59,7 +72,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>my-remote-mysql-user-storage-provider</finalName>
+		<finalName>my-remote-user-storage-provider</finalName>
 <!--		<plugins>-->
 <!--			<plugin>-->
 <!--				<groupId>org.springframework.boot</groupId>-->

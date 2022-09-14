@@ -10,7 +10,7 @@ import javax.ws.rs.client.ClientBuilder;
 
 
 public class RemoteUserStorageProviderFactory implements UserStorageProviderFactory<RemoteUserStorageProvider>{
-    public static final String PROVIDER_NAME = "my-remote-mysql-user-storage-provider";
+    public static final String PROVIDER_NAME = "my-remote-user-storage-provider";
 
     @Override
     public RemoteUserStorageProvider create(KeycloakSession keycloakSession, ComponentModel componentModel) {
