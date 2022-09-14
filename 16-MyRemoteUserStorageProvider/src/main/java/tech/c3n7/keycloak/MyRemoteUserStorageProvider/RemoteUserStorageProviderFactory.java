@@ -1,6 +1,7 @@
 package tech.c3n7.keycloak.MyRemoteUserStorageProvider;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.models.KeycloakSession;
@@ -26,7 +27,7 @@ public class RemoteUserStorageProviderFactory implements UserStorageProviderFact
 
     private UsersApiService buildHttpClient(String uri) {
         // https://stackoverflow.com/a/65853591
-        ResteasyClient client = (ResteasyClient) ClientBuilder.newClient();
+        ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target = client.target(uri);
 
         return target.proxyBuilder(UsersApiService.class)
