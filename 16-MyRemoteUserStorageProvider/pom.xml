@@ -22,12 +22,20 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
+		<!-- https://www.keycloak.org/docs/latest/release_notes/index.html#changes-in-keycloak-storage-->
 		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-server-spi</artifactId>
 			<version>19.0.1</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-model-legacy</artifactId>
+			<version>19.0.1</version>
+		</dependency>
+
 
 
 		<dependency>
