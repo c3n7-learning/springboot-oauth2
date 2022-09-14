@@ -1,5 +1,6 @@
 package tech.c3n7.orders;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 @RestController
 public class OrdersController {
+    @GetMapping("/orders")
     public List<OrderRest> getOrders() {
         OrderRest order1 = new OrderRest(
                 UUID.randomUUID().toString(),
